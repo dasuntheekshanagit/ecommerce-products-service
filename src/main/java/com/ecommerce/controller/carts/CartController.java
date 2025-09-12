@@ -1,5 +1,6 @@
 package com.ecommerce.controller.carts;
 
+import com.ecommerce.dto.ApiResponseDTO;
 import com.ecommerce.dto.carts.request.AddCartItemRequest;
 import com.ecommerce.dto.carts.request.UpdateCartItemRequest;
 import com.ecommerce.dto.carts.response.CartItemResponse;
@@ -24,7 +25,7 @@ public interface CartController {
             @ApiResponse(responseCode = "200", description = "Cart retrieved successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid user ID")
     })
-    ResponseEntity<CartResponse> getCart(
+    ResponseEntity<ApiResponseDTO<CartResponse>> getCart(
             @Parameter(description = "User ID", required = true)
             @RequestHeader("X-User-Id") Long userId);
 
@@ -34,7 +35,7 @@ public interface CartController {
             @ApiResponse(responseCode = "201", description = "Item added to cart successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid request data")
     })
-    ResponseEntity<CartItemResponse> addItemToCart(
+    ResponseEntity<ApiResponseDTO<CartItemResponse>> addItemToCart(
             @Parameter(description = "User ID", required = true)
             @RequestHeader("X-User-Id") Long userId,
             @Parameter(description = "Item to add to cart")
@@ -47,7 +48,7 @@ public interface CartController {
             @ApiResponse(responseCode = "400", description = "Invalid request data"),
             @ApiResponse(responseCode = "404", description = "Cart item not found")
     })
-    ResponseEntity<CartItemResponse> updateCartItem(
+    ResponseEntity<ApiResponseDTO<CartItemResponse>> updateCartItem(
             @Parameter(description = "User ID", required = true)
             @RequestHeader("X-User-Id") Long userId,
             @Parameter(description = "Cart item ID")
@@ -61,7 +62,7 @@ public interface CartController {
             @ApiResponse(responseCode = "204", description = "Item removed from cart successfully"),
             @ApiResponse(responseCode = "404", description = "Cart item not found")
     })
-    ResponseEntity<Void> removeItemFromCart(
+    ResponseEntity<ApiResponseDTO<Void>> removeItemFromCart(
             @Parameter(description = "User ID", required = true)
             @RequestHeader("X-User-Id") Long userId,
             @Parameter(description = "Cart item ID")
@@ -73,7 +74,7 @@ public interface CartController {
             @ApiResponse(responseCode = "204", description = "Cart cleared successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid user ID")
     })
-    ResponseEntity<Void> clearCart(
+    ResponseEntity<ApiResponseDTO<Void>> clearCart(
             @Parameter(description = "User ID", required = true)
             @RequestHeader("X-User-Id") Long userId);
 }

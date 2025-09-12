@@ -1,22 +1,21 @@
 package com.ecommerce.controller.carts.impl;
 
+import com.ecommerce.controller.AbstractController;
 import com.ecommerce.controller.carts.CartController;
+import com.ecommerce.dto.ApiResponseDTO;
 import com.ecommerce.dto.carts.request.AddCartItemRequest;
 import com.ecommerce.dto.carts.request.UpdateCartItemRequest;
 import com.ecommerce.dto.carts.response.CartItemResponse;
 import com.ecommerce.dto.carts.response.CartResponse;
 import com.ecommerce.service.carts.CartService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-public class CartControllerImpl implements CartController {
+public class CartControllerImpl extends AbstractController implements CartController {
 
     private final CartService cartService;
 
@@ -25,55 +24,42 @@ public class CartControllerImpl implements CartController {
         this.cartService = cartService;
     }
 
-
-    public ResponseEntity<CartResponse> getCart(Long userId) {
+    public ResponseEntity<ApiResponseDTO<CartResponse>> getCart(Long userId) {
 
         log.info("GET /v1/cart - userId: {}", userId);
-
-        CartResponse response = cartService.getCartByUserId(userId);
-        return ResponseEntity.ok(response);
+        return ok(() -> cartService.getCartByUserId(userId));
     }
 
-    public ResponseEntity<CartItemResponse> addItemToCart(
+    public ResponseEntity<ApiResponseDTO<CartItemResponse>> addItemToCart(
             Long userId,
             AddCartItemRequest request) {
 
         log.info("POST /v1/cart/items - userId: {}, productId: {}", userId, request.getProductId());
-
-        CartItemResponse response = cartService.addItemToCart(userId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return created(() -> cartService.addItemToCart(userId, request));
     }
 
-    public ResponseEntity<CartItemResponse> updateCartItem(
+    public ResponseEntity<ApiResponseDTO<CartItemResponse>> updateCartItem(
             Long userId,
             Long itemId,
             UpdateCartItemRequest request) {
 
         log.info("PATCH /v1/cart/items/{} - userId: {}, quantity: {}", itemId, userId, request.getQuantity());
-
-        CartItemResponse response = cartService.updateCartItem(userId, itemId, request);
-        return ResponseEntity.ok(response);
+        return ok(() -> cartService.updateCartItem(userId, itemId, request));
     }
 
-
-    public ResponseEntity<Void> removeItemFromCart(
+    public ResponseEntity<ApiResponseDTO<Void>> removeItemFromCart(
             Long userId,
             Long itemId) {
 
         log.info("DELETE /v1/cart/items/{} - userId: {}", itemId, userId);
-
-        cartService.removeItemFromCart(userId, itemId);
-        return ResponseEntity.noContent().build();
+        return noContent(() -> cartService.removeItemFromCart(userId, itemId));
     }
 
-
-    public ResponseEntity<Void> clearCart(
+    public ResponseEntity<ApiResponseDTO<Void>> clearCart(
             Long userId) {
 
         log.info("DELETE /v1/cart - userId: {}", userId);
-
-        cartService.clearCart(userId);
-        return ResponseEntity.noContent().build();
+        return noContent(() -> cartService.clearCart(userId));
     }
 }
 
