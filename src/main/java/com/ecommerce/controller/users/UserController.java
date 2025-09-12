@@ -1,10 +1,10 @@
 package com.ecommerce.controller.users;
 
-import com.ecommerce.dto.users.request.CreateAddressRequest;
-import com.ecommerce.dto.users.request.UpdateUserRequest;
-import com.ecommerce.dto.users.response.AddressResponse;
-import com.ecommerce.dto.users.response.UserResponse;
-import com.ecommerce.service.users.UserService;
+import com.ecommerce.users.dto.request.CreateAddressRequest;
+import com.ecommerce.users.dto.request.UpdateUserRequest;
+import com.ecommerce.users.dto.response.AddressResponse;
+import com.ecommerce.users.dto.response.UserResponse;
+import com.ecommerce.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
