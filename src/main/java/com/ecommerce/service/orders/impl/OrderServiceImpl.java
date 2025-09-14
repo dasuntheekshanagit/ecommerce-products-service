@@ -52,27 +52,31 @@ public class OrderServiceImpl implements OrderService {
         log.info("Creating order for user: {}", request.getUserId());
 
         // Create order
-        Order order = new Order(request.getUserId(), OrderStatus.PENDING, request.getTotalPrice());
+        Order order = Order.builder()
+            .userId(request.getUserId())
+            .status(OrderStatus.PENDING)
+            .totalPrice(request.getTotalPrice())
+            .build();
 
         // Add order items
         for (OrderItemRequestDTO itemRequest : request.getItems()) {
-            OrderItem orderItem = new OrderItem(
-                    order,
-                    itemRequest.getProductId(),
-                    itemRequest.getQuantity(),
-                    itemRequest.getPrice()
-            );
+            OrderItem orderItem = OrderItem.builder()
+                .order(order)
+                .productId(itemRequest.getProductId())
+                .quantity(itemRequest.getQuantity())
+                .price(itemRequest.getPrice())
+                .build();
             order.addItem(orderItem);
         }
 
         // Add payment if provided
         if (request.getPayment() != null) {
-            Payment payment = new Payment(
-                    order,
-                    request.getPayment().getPaymentMethod(),
-                    request.getPayment().getAmount(),
-                    "PENDING"
-            );
+            Payment payment = Payment.builder()
+                .order(order)
+                .paymentMethod(request.getPayment().getPaymentMethod())
+                .amount(request.getPayment().getAmount())
+                .status("PENDING")
+                .build();
             order.addPayment(payment);
         }
 

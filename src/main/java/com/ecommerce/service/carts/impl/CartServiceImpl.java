@@ -56,7 +56,12 @@ public class CartServiceImpl implements CartService {
             cartItem.setPrice(request.getPrice());
             log.info("Updated existing cart item quantity to: {}", cartItem.getQuantity());
         } else {
-            cartItem = new CartItem(cart, request.getProductId(), request.getQuantity(), request.getPrice());
+            cartItem = CartItem.builder()
+                .cart(cart)
+                .productId(request.getProductId())
+                .quantity(request.getQuantity())
+                .price(request.getPrice())
+                .build();
             cart.addItem(cartItem);
             log.info("Added new item to cart");
         }
@@ -118,4 +123,3 @@ public class CartServiceImpl implements CartService {
         }
     }
 }
-

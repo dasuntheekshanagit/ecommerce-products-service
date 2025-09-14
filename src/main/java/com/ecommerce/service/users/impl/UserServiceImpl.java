@@ -91,14 +91,14 @@ public class UserServiceImpl implements UserService {
         log.info("Adding address for user ID: {}", userId);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
-        Address address = new Address(
-                user,
-                request.getStreet(),
-                request.getCity(),
-                request.getState(),
-                request.getPostalCode(),
-                request.getCountry()
-        );
+        Address address = Address.builder()
+                .user(user)
+                .street(request.getStreet())
+                .city(request.getCity())
+                .state(request.getState())
+                .postalCode(request.getPostalCode())
+                .country(request.getCountry())
+                .build();
         user.addAddress(address);
         Address savedAddress = addressRepository.save(address);
         log.info("Added address with ID: {} for user ID: {}", savedAddress.getId(), userId);
@@ -129,4 +129,3 @@ public class UserServiceImpl implements UserService {
         log.info("Deleted address ID: {} for user ID: {}", addressId, userId);
     }
 }
-
