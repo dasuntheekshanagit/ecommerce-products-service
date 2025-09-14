@@ -16,15 +16,8 @@ public interface CartMapper {
 
     CartMapper INSTANCE = Mappers.getMapper(CartMapper.class);
 
-    public static BigDecimal calculateTotalPrice(List<CartItem> items) {
-        return items.stream()
-                .map(CartItem::getTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    @Mapping(target = "totalPrice", expression = "java(calculateTotalPrice(cart.getItems()))")
+    @Mapping(target = "totalPrice", expression = "java(com.ecommerce.mapper.carts.CartMapperUtil.calculateTotalPrice(cart.getItems()))")
     CartResponseDTO toResponse(Cart cart);
 
     CartItemResponseDTO toItemResponse(CartItem savedItem);
 }
-
