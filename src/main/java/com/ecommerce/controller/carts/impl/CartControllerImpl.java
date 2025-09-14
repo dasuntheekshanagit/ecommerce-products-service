@@ -17,12 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CartControllerImpl extends AbstractController implements CartController {
 
-    private final CartService cartService;
-
     @Autowired
-    public CartControllerImpl(CartService cartService) {
-        this.cartService = cartService;
-    }
+    CartService cartService;
 
     public ResponseEntity<ApiResponseDTO<CartResponse>> getCart(Long userId) {
 
