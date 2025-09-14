@@ -4,10 +4,18 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "cart_items", 
        uniqueConstraints = @UniqueConstraint(columnNames = {"cart_id", "product_id"}))
 public class CartItem {
@@ -35,72 +43,12 @@ public class CartItem {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    // Default constructor
-    public CartItem() {}
 
-    // Constructor with required fields
-    public CartItem(Cart cart, Long productId, Integer quantity, BigDecimal price) {
-        this.cart = cart;
-        this.productId = productId;
-        this.quantity = quantity;
-        this.price = price;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
 
     // Helper methods
     public BigDecimal getTotalPrice() {
         return price.multiply(BigDecimal.valueOf(quantity));
     }
 
-    @Override
-    public String toString() {
-        return "CartItem{" +
-                "id=" + id +
-                ", productId=" + productId +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                ", totalPrice=" + getTotalPrice() +
-                '}';
-    }
 }
 
