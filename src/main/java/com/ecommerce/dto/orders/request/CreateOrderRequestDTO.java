@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateOrderRequest {
+public class CreateOrderRequestDTO {
 
     @NotNull(message = "User ID is required")
     private Long userId;
@@ -27,9 +27,9 @@ public class CreateOrderRequest {
 
     @NotEmpty(message = "Order items are required")
     @Valid
-    private List<OrderItemRequest> items;
+    private List<OrderItemRequestDTO> items;
 
     @Valid
-    private PaymentRequest payment;
+    private PaymentRequestDTO payment;
 }
 

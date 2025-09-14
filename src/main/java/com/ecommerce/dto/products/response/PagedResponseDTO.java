@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PagedResponse<T> {
+public class PagedResponseDTO<T> {
 
     private List<T> content;
     private int page;

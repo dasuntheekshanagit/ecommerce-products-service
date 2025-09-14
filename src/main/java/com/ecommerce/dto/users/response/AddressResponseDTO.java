@@ -1,4 +1,4 @@
-package com.ecommerce.dto.products.response;
+package com.ecommerce.dto.users.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -11,10 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CategoryResponse {
+public class AddressResponseDTO {
 
     private Long id;
-    private String name;
-    private String description;
+    private Long userId;
+    private String street;
+    private String city;
+    private String state;
+    private String postalCode;
+    private String country;
+    private String fullAddress;
 }
 

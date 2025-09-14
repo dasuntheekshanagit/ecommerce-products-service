@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentRequest {
+public class PaymentRequestDTO {
 
     @NotBlank(message = "Payment method is required")
     private String paymentMethod;

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateOrderStatusRequest {
+public class UpdateOrderStatusRequestDTO {
 
     @NotNull(message = "Order status is required")
     private OrderStatus status;

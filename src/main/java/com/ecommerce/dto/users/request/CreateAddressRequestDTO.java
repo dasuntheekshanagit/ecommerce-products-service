@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateAddressRequest {
+public class CreateAddressRequestDTO {
 
     @NotBlank(message = "Street is required")
     private String street;

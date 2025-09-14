@@ -1,4 +1,4 @@
-package com.ecommerce.dto.carts.response;
+package com.ecommerce.dto.users.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,19 +15,20 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CartResponse {
+public class UserResponseDTO {
 
     private Long id;
-    private Long userId;
-    private List<CartItemResponse> items;
-    private Integer totalItems;
-    private BigDecimal totalPrice;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String fullName;
+    private List<AddressResponseDTO> addresses;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime updatedAt;
-
 }
 
