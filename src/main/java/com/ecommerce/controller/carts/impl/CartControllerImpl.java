@@ -27,10 +27,10 @@ public class CartControllerImpl extends AbstractController implements CartContro
     }
 
     @Override
-    public ResponseEntity<ApiResponseDTO<Void>> createCart(Long userId) {
+    public ResponseEntity<ApiResponseDTO<CartResponseDTO>> createCart(Long userId) {
 
-        log.info("POST /v1/cart - userId: {}", userId);
-        return noContent(() -> cartService.getCartByUserId(userId));
+        log.info("POST /v1/cart - userId: {} (create cart)", userId);
+        return created(() -> cartService.createCart(userId));
     }
 
     public ResponseEntity<ApiResponseDTO<CartItemResponseDTO>> addItemToCart(
@@ -64,5 +64,9 @@ public class CartControllerImpl extends AbstractController implements CartContro
         log.info("DELETE /v1/cart - userId: {}", userId);
         return noContent(() -> cartService.clearCart(userId));
     }
-}
 
+    public ResponseEntity<ApiResponseDTO<Void>> deleteCart(Long userId) {
+        log.info("DELETE /v1/carts/delete/{} - userId: {}", userId, userId);
+        return noContent(() -> cartService.deleteCart(userId));
+    }
+}

@@ -33,10 +33,10 @@ public class UserControllerImpl extends AbstractController implements UserContro
         return ok(() -> userService.getUserById(userId));
     }
 
-    // TODO:
     @Override
     public ResponseEntity<ApiResponseDTO<UserResponseDTO>> createUserProfile( UpdateUserRequestDTO request) {
-        return null;
+        log.info("POST /v1/users - Creating user profile");
+        return created(() -> userService.createUser(request));
     }
 
     @Override
@@ -77,4 +77,3 @@ public class UserControllerImpl extends AbstractController implements UserContro
         return ResponseEntity.noContent().build();
     }
 }
-

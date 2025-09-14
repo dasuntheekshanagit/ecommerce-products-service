@@ -110,6 +110,32 @@ public class CartServiceImpl implements CartService {
         }
     }
 
+    @Override
+    public void deleteCart(Long userId) {
+        log.info("Deleting cart for user: {}", userId);
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found for user: " + userId));
+        cartItemRepository.deleteByCartId(cart.getId());
+        cartRepository.delete(cart);
+        log.info("Deleted cart for user: {}", userId);
+    }
+
+    @Override
+    public CartResponseDTO createCart(Long userId) {
+        log.info("Creating cart for user: {}", userId);
+        Optional<Cart> existingCart = cartRepository.findByUserId(userId);
+        if (existingCart.isPresent()) {
+            throw new IllegalArgumentException("Cart already exists for user: " + userId);
+        }
+        Cart newCart = Cart.builder()
+                .userId(userId)
+                .items(null)
+                .build();
+        Cart savedCart = cartRepository.save(newCart);
+        log.info("Created new cart for user: {}", userId);
+        return cartMapper.toResponse(savedCart);
+    }
+
     private Cart getOrCreateCart(Long userId) {
         Optional<Cart> cartOptional = cartRepository.findByUserId(userId);
         if (cartOptional.isPresent()) {

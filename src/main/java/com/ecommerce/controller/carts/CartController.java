@@ -35,7 +35,7 @@ public interface CartController {
             @ApiResponse(responseCode = "201", description = "Cart create successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid request data")
     })
-    ResponseEntity<ApiResponseDTO<Void>> createCart(
+    ResponseEntity<ApiResponseDTO<CartResponseDTO>> createCart(
             @Parameter(description = "User ID", required = true)
             @PathVariable Long userId);
 
@@ -88,5 +88,13 @@ public interface CartController {
             @Parameter(description = "User ID", required = true)
             @PathVariable Long userId);
 
-    // TODO: Delete Cart
+    @DeleteMapping("/delete/{userId}")
+    @Operation(summary = "Delete cart", description = "Delete the user's cart entirely")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Cart deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Cart not found")
+    })
+    ResponseEntity<ApiResponseDTO<Void>> deleteCart(
+            @Parameter(description = "User ID", required = true)
+            @PathVariable Long userId);
 }

@@ -15,4 +15,5 @@ public interface UserService {
     AddressResponseDTO addAddress(Long userId, CreateAddressRequestDTO request);
     AddressResponseDTO updateAddress(Long userId, Long addressId, CreateAddressRequestDTO request);
     void deleteAddress(Long userId, Long addressId);
+    UserResponseDTO createUser(UpdateUserRequestDTO request);
 }

@@ -128,4 +128,20 @@ public class UserServiceImpl implements UserService {
         addressRepository.delete(address);
         log.info("Deleted address ID: {} for user ID: {}", addressId, userId);
     }
+
+    @Override
+    public UserResponseDTO createUser(UpdateUserRequestDTO request) {
+        log.info("Creating new user: {} {}", request.getFirstName(), request.getLastName());
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("Email is already taken: " + request.getEmail());
+        }
+        User user = User.builder()
+                .email(request.getEmail())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .phoneNumber(request.getPhoneNumber())
+                .build();
+        User savedUser = userRepository.save(user);
+        return userMapper.toResponse(savedUser);
+    }
 }
