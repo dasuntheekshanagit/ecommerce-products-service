@@ -1,18 +1,18 @@
 package com.ecommerce.service.users;
 
-import com.ecommerce.dto.users.request.CreateAddressRequest;
-import com.ecommerce.dto.users.request.UpdateUserRequest;
-import com.ecommerce.dto.users.response.AddressResponse;
-import com.ecommerce.dto.users.response.UserResponse;
+import com.ecommerce.dto.users.request.CreateAddressRequestDTO;
+import com.ecommerce.dto.users.request.UpdateUserRequestDTO;
+import com.ecommerce.dto.users.response.AddressResponseDTO;
+import com.ecommerce.dto.users.response.UserResponseDTO;
 
 import java.util.List;
 
 public interface UserService {
-    UserResponse getUserById(Long userId);
-    UserResponse updateUser(Long userId, UpdateUserRequest request);
+    UserResponseDTO getUserById(Long userId);
+    UserResponseDTO updateUser(Long userId, UpdateUserRequestDTO request);
     void deleteUser(Long userId);
-    List<AddressResponse> getUserAddresses(Long userId);
-    AddressResponse addAddress(Long userId, CreateAddressRequest request);
-    AddressResponse updateAddress(Long userId, Long addressId, CreateAddressRequest request);
+    List<AddressResponseDTO> getUserAddresses(Long userId);
+    AddressResponseDTO addAddress(Long userId, CreateAddressRequestDTO request);
+    AddressResponseDTO updateAddress(Long userId, Long addressId, CreateAddressRequestDTO request);
     void deleteAddress(Long userId, Long addressId);
 }

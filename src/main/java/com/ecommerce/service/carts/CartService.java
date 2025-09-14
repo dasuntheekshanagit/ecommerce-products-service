@@ -1,14 +1,14 @@
 package com.ecommerce.service.carts;
 
-import com.ecommerce.dto.carts.request.AddCartItemRequest;
-import com.ecommerce.dto.carts.request.UpdateCartItemRequest;
-import com.ecommerce.dto.carts.response.CartItemResponse;
-import com.ecommerce.dto.carts.response.CartResponse;
+import com.ecommerce.dto.carts.request.AddCartItemRequestDTO;
+import com.ecommerce.dto.carts.request.UpdateCartItemRequestDTO;
+import com.ecommerce.dto.carts.response.CartItemResponseDTO;
+import com.ecommerce.dto.carts.response.CartResponseDTO;
 
 public interface CartService {
-    CartResponse getCartByUserId(Long userId);
-    CartItemResponse addItemToCart(Long userId, AddCartItemRequest request);
-    CartItemResponse updateCartItem(Long userId, Long itemId, UpdateCartItemRequest request);
+    CartResponseDTO getCartByUserId(Long userId);
+    CartItemResponseDTO addItemToCart(Long userId, AddCartItemRequestDTO request);
+    CartItemResponseDTO updateCartItem(Long userId, Long itemId, UpdateCartItemRequestDTO request);
     void removeItemFromCart(Long userId, Long itemId);
     void clearCart(Long userId);
 }

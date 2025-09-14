@@ -3,10 +3,10 @@ package com.ecommerce.controller.users.impl;
 import com.ecommerce.controller.AbstractController;
 import com.ecommerce.controller.users.UserController;
 import com.ecommerce.dto.ApiResponseDTO;
-import com.ecommerce.dto.users.request.CreateAddressRequest;
-import com.ecommerce.dto.users.request.UpdateUserRequest;
-import com.ecommerce.dto.users.response.AddressResponse;
-import com.ecommerce.dto.users.response.UserResponse;
+import com.ecommerce.dto.users.request.CreateAddressRequestDTO;
+import com.ecommerce.dto.users.request.UpdateUserRequestDTO;
+import com.ecommerce.dto.users.response.AddressResponseDTO;
+import com.ecommerce.dto.users.response.UserResponseDTO;
 import com.ecommerce.service.users.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +28,18 @@ public class UserControllerImpl extends AbstractController implements UserContro
     }
 
     @Override
-    public ResponseEntity<ApiResponseDTO<UserResponse>> getUserProfile(Long userId) {
+    public ResponseEntity<ApiResponseDTO<UserResponseDTO>> getUserProfile(Long userId) {
         log.info("GET /v1/users/{} - Getting user profile", userId);
         return ok(() -> userService.getUserById(userId));
     }
 
     @Override
-    public ResponseEntity<ApiResponseDTO<UserResponse>> createUserProfile(Long userId, UpdateUserRequest request) {
+    public ResponseEntity<ApiResponseDTO<UserResponseDTO>> createUserProfile(Long userId, UpdateUserRequestDTO request) {
         return null;
     }
 
     @Override
-    public ResponseEntity<ApiResponseDTO<UserResponse>> updateUserProfile(Long userId, UpdateUserRequest request) {
+    public ResponseEntity<ApiResponseDTO<UserResponseDTO>> updateUserProfile(Long userId, UpdateUserRequestDTO request) {
         log.info("PATCH /v1/users/{} - Updating user profile", userId);
         return ok(() -> userService.updateUser(userId, request));
     }
@@ -52,19 +52,19 @@ public class UserControllerImpl extends AbstractController implements UserContro
     }
 
     @Override
-    public ResponseEntity<ApiResponseDTO<List<AddressResponse>>> getUserAddresses(Long userId, boolean fetchAllAddress) {
+    public ResponseEntity<ApiResponseDTO<List<AddressResponseDTO>>> getUserAddresses(Long userId, boolean fetchAllAddress) {
         log.info("GET /v1/users/{}/addresses - Getting user addresses", userId);
         return ok(() -> userService.getUserAddresses(userId));
     }
 
     @Override
-    public ResponseEntity<AddressResponse> addAddress(Long userId, CreateAddressRequest request) {
+    public ResponseEntity<AddressResponseDTO> addAddress(Long userId, CreateAddressRequestDTO request) {
         log.info("POST /v1/users/{}/addresses - Adding address", userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.addAddress(userId, request));
     }
 
     @Override
-    public ResponseEntity<ApiResponseDTO<AddressResponse>> updateAddress(Long userId, Long addressId, CreateAddressRequest request) {
+    public ResponseEntity<ApiResponseDTO<AddressResponseDTO>> updateAddress(Long userId, Long addressId, CreateAddressRequestDTO request) {
         log.info("PATCH /v1/users/{}/addresses/{} - Updating address", userId, addressId);
         return ok(() -> userService.updateAddress(userId, addressId, request));
     }

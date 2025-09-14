@@ -1,10 +1,10 @@
 package com.ecommerce.controller.users;
 
 import com.ecommerce.dto.ApiResponseDTO;
-import com.ecommerce.dto.users.request.CreateAddressRequest;
-import com.ecommerce.dto.users.request.UpdateUserRequest;
-import com.ecommerce.dto.users.response.AddressResponse;
-import com.ecommerce.dto.users.response.UserResponse;
+import com.ecommerce.dto.users.request.CreateAddressRequestDTO;
+import com.ecommerce.dto.users.request.UpdateUserRequestDTO;
+import com.ecommerce.dto.users.response.AddressResponseDTO;
+import com.ecommerce.dto.users.response.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,7 +27,7 @@ public interface UserController {
             @ApiResponse(responseCode = "200", description = "User profile retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
-    ResponseEntity<ApiResponseDTO<UserResponse>> getUserProfile(
+    ResponseEntity<ApiResponseDTO<UserResponseDTO>> getUserProfile(
             @Parameter(description = "User ID")
             @PathVariable Long userId);
 
@@ -37,11 +37,11 @@ public interface UserController {
             @ApiResponse(responseCode = "201", description = "User profile created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid request data")
     })
-    ResponseEntity<ApiResponseDTO<UserResponse>> createUserProfile(
+    ResponseEntity<ApiResponseDTO<UserResponseDTO>> createUserProfile(
             @Parameter(description = "User ID")
             @PathVariable Long userId,
             @Parameter(description = "Create user data")
-            @Valid @RequestBody UpdateUserRequest request);
+            @Valid @RequestBody UpdateUserRequestDTO request);
 
     @PatchMapping("/{userId}")
     @Operation(summary = "Update user profile", description = "Update user profile information")
@@ -50,11 +50,11 @@ public interface UserController {
             @ApiResponse(responseCode = "400", description = "Invalid request data"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
-    ResponseEntity<ApiResponseDTO<UserResponse>> updateUserProfile(
+    ResponseEntity<ApiResponseDTO<UserResponseDTO>> updateUserProfile(
             @Parameter(description = "User ID")
             @PathVariable Long userId,
             @Parameter(description = "Updated user data")
-            @Valid @RequestBody UpdateUserRequest request);
+            @Valid @RequestBody UpdateUserRequestDTO request);
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "Delete user", description = "Delete user account and all associated data")
@@ -72,7 +72,7 @@ public interface UserController {
             @ApiResponse(responseCode = "200", description = "Addresses retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
-    ResponseEntity<ApiResponseDTO<List<AddressResponse>>> getUserAddresses(
+    ResponseEntity<ApiResponseDTO<List<AddressResponseDTO>>> getUserAddresses(
             @Parameter(description = "User ID") @PathVariable Long userId,
             @Parameter(description = "All Address") @RequestParam(defaultValue = "true") boolean fetchAllAddress);
 
@@ -83,11 +83,11 @@ public interface UserController {
             @ApiResponse(responseCode = "400", description = "Invalid request data"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
-    ResponseEntity<AddressResponse> addAddress(
+    ResponseEntity<AddressResponseDTO> addAddress(
             @Parameter(description = "User ID")
             @PathVariable Long userId,
             @Parameter(description = "Address data")
-            @Valid @RequestBody CreateAddressRequest request);
+            @Valid @RequestBody CreateAddressRequestDTO request);
 
     @PatchMapping("/{userId}/addresses/{addressId}")
     @Operation(summary = "Update address", description = "Update an existing address")
@@ -96,13 +96,13 @@ public interface UserController {
             @ApiResponse(responseCode = "400", description = "Invalid request data"),
             @ApiResponse(responseCode = "404", description = "User or address not found")
     })
-    ResponseEntity<ApiResponseDTO<AddressResponse>> updateAddress(
+    ResponseEntity<ApiResponseDTO<AddressResponseDTO>> updateAddress(
             @Parameter(description = "User ID")
             @PathVariable Long userId,
             @Parameter(description = "Address ID")
             @PathVariable Long addressId,
             @Parameter(description = "Updated address data")
-            @Valid @RequestBody CreateAddressRequest request);
+            @Valid @RequestBody CreateAddressRequestDTO request);
 
     @DeleteMapping("/{userId}/addresses/{addressId}")
     @Operation(summary = "Remove address", description = "Remove an address from the user's profile")

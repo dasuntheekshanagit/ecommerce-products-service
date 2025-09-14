@@ -1,10 +1,10 @@
 package com.ecommerce.controller.products;
 
 import com.ecommerce.dto.ApiResponseDTO;
-import com.ecommerce.dto.products.request.CreateProductRequest;
-import com.ecommerce.dto.products.request.UpdateProductRequest;
-import com.ecommerce.dto.products.response.PagedResponse;
-import com.ecommerce.dto.products.response.ProductResponse;
+import com.ecommerce.dto.products.request.CreateProductRequestDTO;
+import com.ecommerce.dto.products.request.UpdateProductRequestDTO;
+import com.ecommerce.dto.products.response.PagedResponseDTO;
+import com.ecommerce.dto.products.response.ProductResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,7 +27,7 @@ public interface ProductController {
             @ApiResponse(responseCode = "200", description = "Products retrieved successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid request parameters")
     })
-    ResponseEntity<ApiResponseDTO<PagedResponse<ProductResponse>>> getAllProducts(
+    ResponseEntity<ApiResponseDTO<PagedResponseDTO<ProductResponseDTO>>> getAllProducts(
             @Parameter(description = "Page number (0-based)") @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Page size") @RequestParam(defaultValue = "20") int size,
             @Parameter(description = "Sort field") @RequestParam(required = false) String sortBy,
@@ -44,7 +44,7 @@ public interface ProductController {
             @ApiResponse(responseCode = "200", description = "Product found"),
             @ApiResponse(responseCode = "404", description = "Product not found")
     })
-    ResponseEntity<ApiResponseDTO<ProductResponse>> getProductById(
+    ResponseEntity<ApiResponseDTO<ProductResponseDTO>> getProductById(
             @Parameter(description = "Product ID") @PathVariable Long productId);
 
     @PostMapping
@@ -54,8 +54,8 @@ public interface ProductController {
             @ApiResponse(responseCode = "400", description = "Invalid product data"),
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
-    ResponseEntity<ApiResponseDTO<ProductResponse>> createProduct(
-            @Parameter(description = "Product creation data") @Valid @RequestBody CreateProductRequest request);
+    ResponseEntity<ApiResponseDTO<ProductResponseDTO>> createProduct(
+            @Parameter(description = "Product creation data") @Valid @RequestBody CreateProductRequestDTO request);
 
     @PatchMapping("/{productId}")
     @Operation(summary = "Update product", description = "Update an existing product")
@@ -64,9 +64,9 @@ public interface ProductController {
             @ApiResponse(responseCode = "400", description = "Invalid product data"),
             @ApiResponse(responseCode = "404", description = "Product or category not found")
     })
-    ResponseEntity<ApiResponseDTO<ProductResponse>> updateProduct(
+    ResponseEntity<ApiResponseDTO<ProductResponseDTO>> updateProduct(
             @Parameter(description = "Product ID") @PathVariable Long productId,
-            @Parameter(description = "Product update data") @Valid @RequestBody UpdateProductRequest request);
+            @Parameter(description = "Product update data") @Valid @RequestBody UpdateProductRequestDTO request);
 
     @DeleteMapping("/{productId}")
     @Operation(summary = "Delete product", description = "Delete an existing product")

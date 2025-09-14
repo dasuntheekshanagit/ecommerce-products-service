@@ -3,10 +3,10 @@ package com.ecommerce.controller.orders.impl;
 import com.ecommerce.controller.AbstractController;
 import com.ecommerce.controller.orders.OrderController;
 import com.ecommerce.dto.ApiResponseDTO;
-import com.ecommerce.dto.orders.request.CreateOrderRequest;
-import com.ecommerce.dto.orders.request.UpdateOrderStatusRequest;
+import com.ecommerce.dto.orders.request.CreateOrderRequestDTO;
+import com.ecommerce.dto.orders.request.UpdateOrderStatusRequestDTO;
 import com.ecommerce.dto.orders.response.OrderResponse;
-import com.ecommerce.service.orders.OrderService;
+import com.ecommerce.service.orders.impl.OrderServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,29 +17,29 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderControllerImpl extends AbstractController implements OrderController {
 
     @Autowired
-    private OrderService orderService;
+    private OrderServiceImpl orderServiceImpl;
 
     @Override
     public ResponseEntity<ApiResponseDTO<OrderResponse>> getOrderById(Long orderId) {
-        log.info("GET /v1/admin/orders/{} - Getting order details (admin)", orderId);
-        return ok(() -> orderService.getOrderById(orderId));
+        log.info("GET /v1/orders/{} - Getting order details", orderId);
+        return ok(() -> orderServiceImpl.getOrderById(orderId));
     }
 
     @Override
-    public ResponseEntity<ApiResponseDTO<OrderResponse>> updateOrderStatus(Long orderId, UpdateOrderStatusRequest request) {
-        log.info("PATCH /v1/admin/orders/{}/status - Updating order status (admin)", orderId);
-        return ok(() -> orderService.updateOrderStatus(orderId, request));
+    public ResponseEntity<ApiResponseDTO<OrderResponse>> updateOrderStatus(Long orderId, UpdateOrderStatusRequestDTO request) {
+        log.info("PATCH /v1/orders/{}/status - Updating order status", orderId);
+        return ok(() -> orderServiceImpl.updateOrderStatus(orderId, request));
     }
 
     @Override
-    public ResponseEntity<ApiResponseDTO<OrderResponse>> createOrder(CreateOrderRequest request) {
+    public ResponseEntity<ApiResponseDTO<OrderResponse>> createOrder(CreateOrderRequestDTO request) {
         log.info("POST /v1/orders - Creating order for user: {}", request.getUserId());
-        return created(() -> orderService.createOrder(request));
+        return created(() -> orderServiceImpl.createOrder(request));
     }
 
     @Override
-    public ResponseEntity<ApiResponseDTO<OrderResponse>> updateOrder(Long orderId, CreateOrderRequest request) {
+    public ResponseEntity<ApiResponseDTO<OrderResponse>> updateOrder(Long orderId, CreateOrderRequestDTO request) {
         log.info("PUT /v1/orders/{} - Updating order", orderId);
-        return ok(() -> orderService.updateOrder(orderId, request));
+        return ok(() -> orderServiceImpl.updateOrder(orderId, request));
     }
 }

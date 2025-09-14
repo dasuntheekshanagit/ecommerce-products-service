@@ -1,7 +1,7 @@
 package com.ecommerce.service.products.impl;
 
-import com.ecommerce.dto.products.CategoryMapper;
-import com.ecommerce.dto.products.response.CategoryResponse;
+import com.ecommerce.mapper.products.CategoryMapper;
+import com.ecommerce.dto.products.response.CategoryResponseDTO;
 import com.ecommerce.entity.products.Category;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.products.CategoryRepository;
@@ -19,18 +19,15 @@ import java.util.stream.Collectors;
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
 
-    private final CategoryRepository categoryRepository;
-    private final CategoryMapper categoryMapper;
+    @Autowired
+    CategoryRepository categoryRepository;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
-        this.categoryRepository = categoryRepository;
-        this.categoryMapper = categoryMapper;
-    }
+    CategoryMapper categoryMapper;
 
     @Override
     @Transactional(readOnly = true)
-    public List<CategoryResponse> getAllCategories() {
+    public List<CategoryResponseDTO> getAllCategories() {
         log.info("Fetching all categories");
         List<Category> categories = categoryRepository.findAllByOrderByNameAsc();
         return categories.stream()
@@ -40,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public CategoryResponse getCategoryById(Long id) {
+    public CategoryResponseDTO getCategoryById(Long id) {
         log.info("Fetching category with id: {}", id);
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
@@ -49,7 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CategoryResponse> searchCategoriesByName(String name) {
+    public List<CategoryResponseDTO> searchCategoriesByName(String name) {
         log.info("Searching categories with name containing: {}", name);
         List<Category> categories = categoryRepository.findByNameContainingIgnoreCase(name);
         return categories.stream()

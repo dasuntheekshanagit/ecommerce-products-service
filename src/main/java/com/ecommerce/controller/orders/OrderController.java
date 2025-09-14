@@ -1,8 +1,8 @@
 package com.ecommerce.controller.orders;
 
 import com.ecommerce.dto.ApiResponseDTO;
-import com.ecommerce.dto.orders.request.CreateOrderRequest;
-import com.ecommerce.dto.orders.request.UpdateOrderStatusRequest;
+import com.ecommerce.dto.orders.request.CreateOrderRequestDTO;
+import com.ecommerce.dto.orders.request.UpdateOrderStatusRequestDTO;
 import com.ecommerce.dto.orders.response.OrderResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,7 +39,7 @@ public interface OrderController {
             @Parameter(description = "Order ID")
             @PathVariable Long orderId,
             @Parameter(description = "Order status update")
-            @Valid @RequestBody UpdateOrderStatusRequest request);
+            @Valid @RequestBody UpdateOrderStatusRequestDTO request);
 
     @PostMapping("")
     @Operation(summary = "Create order", description = "Create a new order")
@@ -49,7 +49,7 @@ public interface OrderController {
     })
     ResponseEntity<ApiResponseDTO<OrderResponse>> createOrder(
             @Parameter(description = "Order create request")
-            @Valid @RequestBody CreateOrderRequest request);
+            @Valid @RequestBody CreateOrderRequestDTO request);
 
     @PutMapping("/{orderId}")
     @Operation(summary = "Update order", description = "Update an existing order")
@@ -62,5 +62,5 @@ public interface OrderController {
             @Parameter(description = "Order ID")
             @PathVariable Long orderId,
             @Parameter(description = "Order update request")
-            @Valid @RequestBody CreateOrderRequest request);
+            @Valid @RequestBody CreateOrderRequestDTO request);
 }

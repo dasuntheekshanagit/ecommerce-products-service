@@ -1,10 +1,10 @@
 package com.ecommerce.service.carts.impl;
 
-import com.ecommerce.dto.carts.CartMapper;
-import com.ecommerce.dto.carts.request.AddCartItemRequest;
-import com.ecommerce.dto.carts.request.UpdateCartItemRequest;
-import com.ecommerce.dto.carts.response.CartItemResponse;
-import com.ecommerce.dto.carts.response.CartResponse;
+import com.ecommerce.mapper.carts.CartMapper;
+import com.ecommerce.dto.carts.request.AddCartItemRequestDTO;
+import com.ecommerce.dto.carts.request.UpdateCartItemRequestDTO;
+import com.ecommerce.dto.carts.response.CartItemResponseDTO;
+import com.ecommerce.dto.carts.response.CartResponseDTO;
 import com.ecommerce.entity.carts.Cart;
 import com.ecommerce.entity.carts.CartItem;
 import com.ecommerce.exception.ResourceNotFoundException;
@@ -34,20 +34,18 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional(readOnly = true)
-    public CartResponse getCartByUserId(Long userId) {
+    public CartResponseDTO getCartByUserId(Long userId) {
         log.info("Fetching cart for user: {}", userId);
         Optional<Cart> cartOptional = cartRepository.findByUserIdWithItems(userId);
         if (cartOptional.isEmpty()) {
-            Cart newCart = new Cart(userId);
-            Cart savedCart = cartRepository.save(newCart);
-            log.info("Created new cart for user: {}", userId);
-            return cartMapper.toResponse(savedCart);
+            log.warn("No cart found for user: {}", userId);
+            throw new ResourceNotFoundException("Cart not found for user: " + userId);
         }
         return cartMapper.toResponse(cartOptional.get());
     }
 
     @Override
-    public CartItemResponse addItemToCart(Long userId, AddCartItemRequest request) {
+    public CartItemResponseDTO addItemToCart(Long userId, AddCartItemRequestDTO request) {
         log.info("Adding item to cart for user: {}, productId: {}", userId, request.getProductId());
         Cart cart = getOrCreateCart(userId);
         Optional<CartItem> existingItem = cartItemRepository.findByCartIdAndProductId(cart.getId(), request.getProductId());
@@ -67,7 +65,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartItemResponse updateCartItem(Long userId, Long itemId, UpdateCartItemRequest request) {
+    public CartItemResponseDTO updateCartItem(Long userId, Long itemId, UpdateCartItemRequestDTO request) {
         log.info("Updating cart item: {} for user: {}", itemId, userId);
         CartItem cartItem = cartItemRepository.findById(itemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart item not found with id: " + itemId));
@@ -112,7 +110,10 @@ public class CartServiceImpl implements CartService {
         if (cartOptional.isPresent()) {
             return cartOptional.get();
         } else {
-            Cart newCart = new Cart(userId);
+            Cart newCart = Cart.builder()
+                    .userId(userId)
+                    .items(null)
+                    .build();
             return cartRepository.save(newCart);
         }
     }

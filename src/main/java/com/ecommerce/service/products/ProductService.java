@@ -1,20 +1,20 @@
 package com.ecommerce.service.products;
 
-import com.ecommerce.dto.products.request.CreateProductRequest;
-import com.ecommerce.dto.products.request.UpdateProductRequest;
-import com.ecommerce.dto.products.response.PagedResponse;
-import com.ecommerce.dto.products.response.ProductResponse;
+import com.ecommerce.dto.products.request.CreateProductRequestDTO;
+import com.ecommerce.dto.products.request.UpdateProductRequestDTO;
+import com.ecommerce.dto.products.response.PagedResponseDTO;
+import com.ecommerce.dto.products.response.ProductResponseDTO;
 
 import java.math.BigDecimal;
 
 public interface ProductService {
-    PagedResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sortDir,
-                                                 String name, Long categoryId, BigDecimal minPrice,
-                                                 BigDecimal maxPrice, Boolean inStock);
-    ProductResponse getProductById(Long id);
-    ProductResponse createProduct(CreateProductRequest request);
-    ProductResponse updateProduct(Long id, UpdateProductRequest request);
+    PagedResponseDTO<ProductResponseDTO> getAllProducts(int page, int size, String sortBy, String sortDir,
+                                                        String name, Long categoryId, BigDecimal minPrice,
+                                                        BigDecimal maxPrice, Boolean inStock);
+    ProductResponseDTO getProductById(Long id);
+    ProductResponseDTO createProduct(CreateProductRequestDTO request);
+    ProductResponseDTO updateProduct(Long id, UpdateProductRequestDTO request);
     void deleteProduct(Long id);
-    PagedResponse<ProductResponse> getProductsByCategory(Long categoryId, int page, int size);
+    PagedResponseDTO<ProductResponseDTO> getProductsByCategory(Long categoryId, int page, int size);
     long getProductCountByCategory(Long categoryId);
 }

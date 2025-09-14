@@ -1,10 +1,10 @@
 package com.ecommerce.controller.carts;
 
 import com.ecommerce.dto.ApiResponseDTO;
-import com.ecommerce.dto.carts.request.AddCartItemRequest;
-import com.ecommerce.dto.carts.request.UpdateCartItemRequest;
-import com.ecommerce.dto.carts.response.CartItemResponse;
-import com.ecommerce.dto.carts.response.CartResponse;
+import com.ecommerce.dto.carts.request.AddCartItemRequestDTO;
+import com.ecommerce.dto.carts.request.UpdateCartItemRequestDTO;
+import com.ecommerce.dto.carts.response.CartItemResponseDTO;
+import com.ecommerce.dto.carts.response.CartResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,7 +25,7 @@ public interface CartController {
             @ApiResponse(responseCode = "200", description = "Cart retrieved successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid user ID")
     })
-    ResponseEntity<ApiResponseDTO<CartResponse>> getCart(
+    ResponseEntity<ApiResponseDTO<CartResponseDTO>> getCart(
             @Parameter(description = "User ID", required = true)
             @PathVariable Long userId);
 
@@ -45,11 +45,11 @@ public interface CartController {
             @ApiResponse(responseCode = "201", description = "Item added to cart successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid request data")
     })
-    ResponseEntity<ApiResponseDTO<CartItemResponse>> addItemToCart(
+    ResponseEntity<ApiResponseDTO<CartItemResponseDTO>> addItemToCart(
             @Parameter(description = "User ID", required = true)
             @PathVariable Long userId,
             @Parameter(description = "Item to add to cart")
-            @Valid @RequestBody AddCartItemRequest request);
+            @Valid @RequestBody AddCartItemRequestDTO request);
 
     @PatchMapping("/{userId}/items/{itemId}")
     @Operation(summary = "Update cart item", description = "Update the quantity of an item in the cart")
@@ -58,13 +58,13 @@ public interface CartController {
             @ApiResponse(responseCode = "400", description = "Invalid request data"),
             @ApiResponse(responseCode = "404", description = "Cart item not found")
     })
-    ResponseEntity<ApiResponseDTO<CartItemResponse>> updateCartItem(
+    ResponseEntity<ApiResponseDTO<CartItemResponseDTO>> updateCartItem(
             @Parameter(description = "User ID", required = true)
             @PathVariable Long userId,
             @Parameter(description = "Cart item ID")
             @PathVariable Long itemId,
             @Parameter(description = "Updated item data")
-            @Valid @RequestBody UpdateCartItemRequest request);
+            @Valid @RequestBody UpdateCartItemRequestDTO request);
 
     @DeleteMapping("/{userId}/items/{itemId}")
     @Operation(summary = "Remove item from cart", description = "Remove a specific item from the cart")
@@ -87,4 +87,6 @@ public interface CartController {
     ResponseEntity<ApiResponseDTO<Void>> clearCart(
             @Parameter(description = "User ID", required = true)
             @PathVariable Long userId);
+
+    // TODO: Delete Cart
 }

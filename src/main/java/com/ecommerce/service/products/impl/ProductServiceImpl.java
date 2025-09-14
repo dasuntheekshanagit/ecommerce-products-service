@@ -1,10 +1,10 @@
 package com.ecommerce.service.products.impl;
 
-import com.ecommerce.dto.products.ProductMapper;
-import com.ecommerce.dto.products.request.CreateProductRequest;
-import com.ecommerce.dto.products.request.UpdateProductRequest;
-import com.ecommerce.dto.products.response.PagedResponse;
-import com.ecommerce.dto.products.response.ProductResponse;
+import com.ecommerce.mapper.products.ProductMapper;
+import com.ecommerce.dto.products.request.CreateProductRequestDTO;
+import com.ecommerce.dto.products.request.UpdateProductRequestDTO;
+import com.ecommerce.dto.products.response.PagedResponseDTO;
+import com.ecommerce.dto.products.response.ProductResponseDTO;
 import com.ecommerce.entity.products.Product;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.repository.products.CategoryRepository;
@@ -28,24 +28,20 @@ import java.util.stream.Collectors;
 @Transactional
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
-    private final ProductMapper productMapper;
+    @Autowired
+    ProductRepository productRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository,
-                              CategoryRepository categoryRepository,
-                              ProductMapper productMapper) {
-        this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
-        this.productMapper = productMapper;
-    }
+    CategoryRepository categoryRepository;
+
+    @Autowired
+    ProductMapper productMapper;
 
     @Override
     @Transactional(readOnly = true)
-    public PagedResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sortDir,
-                                                        String name, Long categoryId, BigDecimal minPrice,
-                                                        BigDecimal maxPrice, Boolean inStock) {
+    public PagedResponseDTO<ProductResponseDTO> getAllProducts(int page, int size, String sortBy, String sortDir,
+                                                               String name, Long categoryId, BigDecimal minPrice,
+                                                               BigDecimal maxPrice, Boolean inStock) {
         log.info("Fetching products with filters - page: {}, size: {}, name: {}, categoryId: {}",
                 page, size, name, categoryId);
         sortBy = (sortBy != null && !sortBy.isEmpty()) ? sortBy : "id";
@@ -55,11 +51,11 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Product> productPage = productRepository.findProductsWithFilters(
                 name, categoryId, minPrice, maxPrice, inStock, pageable);
-        List<ProductResponse> productResponses = productPage.getContent()
+        List<ProductResponseDTO> productResponses = productPage.getContent()
                 .stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
-        return new PagedResponse<>(
+        return new PagedResponseDTO<>(
                 productResponses,
                 productPage.getNumber(),
                 productPage.getSize(),
@@ -73,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public ProductResponse getProductById(Long id) {
+    public ProductResponseDTO getProductById(Long id) {
         log.info("Fetching product with id: {}", id);
         Product product = productRepository.findByIdWithCategory(id);
         if (product == null) {
@@ -83,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse createProduct(CreateProductRequest request) {
+    public ProductResponseDTO createProduct(CreateProductRequestDTO request) {
         log.info("Creating new product: {}", request.getName());
         if (!categoryRepository.existsById(request.getCategoryId())) {
             throw new ResourceNotFoundException("Category not found with id: " + request.getCategoryId());
@@ -95,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse updateProduct(Long id, UpdateProductRequest request) {
+    public ProductResponseDTO updateProduct(Long id, UpdateProductRequestDTO request) {
         log.info("Updating product with id: {}", id);
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
@@ -121,19 +117,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public PagedResponse<ProductResponse> getProductsByCategory(Long categoryId, int page, int size) {
+    public PagedResponseDTO<ProductResponseDTO> getProductsByCategory(Long categoryId, int page, int size) {
         log.info("Fetching products for category id: {}", categoryId);
         if (!categoryRepository.existsById(categoryId)) {
             throw new ResourceNotFoundException("Category not found with id: " + categoryId);
         }
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
         Page<Product> productPage = productRepository.findByCategoryId(categoryId, pageable);
-        List<ProductResponse> productResponses = productPage.getContent()
+        List<ProductResponseDTO> productResponsDTOS = productPage.getContent()
                 .stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
-        return new PagedResponse<>(
-                productResponses,
+        return new PagedResponseDTO<>(
+                productResponsDTOS,
                 productPage.getNumber(),
                 productPage.getSize(),
                 productPage.getTotalElements(),

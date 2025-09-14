@@ -1,10 +1,10 @@
 package com.ecommerce.service.users.impl;
 
-import com.ecommerce.dto.users.UserMapper;
-import com.ecommerce.dto.users.request.CreateAddressRequest;
-import com.ecommerce.dto.users.request.UpdateUserRequest;
-import com.ecommerce.dto.users.response.AddressResponse;
-import com.ecommerce.dto.users.response.UserResponse;
+import com.ecommerce.mapper.users.UserMapper;
+import com.ecommerce.dto.users.request.CreateAddressRequestDTO;
+import com.ecommerce.dto.users.request.UpdateUserRequestDTO;
+import com.ecommerce.dto.users.response.AddressResponseDTO;
+import com.ecommerce.dto.users.response.UserResponseDTO;
 import com.ecommerce.entity.users.Address;
 import com.ecommerce.entity.users.User;
 import com.ecommerce.exception.ResourceNotFoundException;
@@ -23,22 +23,18 @@ import java.util.List;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final AddressRepository addressRepository;
-    private final UserMapper userMapper;
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository,
-                           AddressRepository addressRepository,
-                           UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.addressRepository = addressRepository;
-        this.userMapper = userMapper;
-    }
+    AddressRepository addressRepository;
+
+    @Autowired
+    UserMapper userMapper;
 
     @Override
     @Transactional(readOnly = true)
-    public UserResponse getUserById(Long userId) {
+    public UserResponseDTO getUserById(Long userId) {
         log.info("Fetching user with ID: {}", userId);
         User user = userRepository.findByIdWithAddresses(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
@@ -46,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse updateUser(Long userId, UpdateUserRequest request) {
+    public UserResponseDTO updateUser(Long userId, UpdateUserRequestDTO request) {
         log.info("Updating user with ID: {}", userId);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
@@ -81,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<AddressResponse> getUserAddresses(Long userId) {
+    public List<AddressResponseDTO> getUserAddresses(Long userId) {
         log.info("Fetching addresses for user ID: {}", userId);
         if (!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException("User not found with id: " + userId);
@@ -91,7 +87,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AddressResponse addAddress(Long userId, CreateAddressRequest request) {
+    public AddressResponseDTO addAddress(Long userId, CreateAddressRequestDTO request) {
         log.info("Adding address for user ID: {}", userId);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
@@ -110,7 +106,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AddressResponse updateAddress(Long userId, Long addressId, CreateAddressRequest request) {
+    public AddressResponseDTO updateAddress(Long userId, Long addressId, CreateAddressRequestDTO request) {
         log.info("Updating address ID: {} for user ID: {}", addressId, userId);
         Address address = addressRepository.findByIdAndUserId(addressId, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Address not found with id: " + addressId + " for user: " + userId));
