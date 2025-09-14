@@ -33,7 +33,7 @@ public class OpenApiConfig {
                                 .url("https://opensource.org/licenses/MIT")))
                 .servers(List.of(
                         new Server()
-                                .url("http://localhost:8081" + contextPath)
+                                .url("http://localhost:8083" + contextPath)
                                 .description("Local development server"),
                         new Server()
                                 .url("https://cart-api.ecommerce.com" + contextPath)

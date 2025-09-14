@@ -31,15 +31,13 @@ public interface UserController {
             @Parameter(description = "User ID")
             @PathVariable Long userId);
 
-    @PostMapping("/{userId}")
+    @PostMapping("/")
     @Operation(summary = "Create user profile", description = "Create a user profile")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User profile created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid request data")
     })
     ResponseEntity<ApiResponseDTO<UserResponseDTO>> createUserProfile(
-            @Parameter(description = "User ID")
-            @PathVariable Long userId,
             @Parameter(description = "Create user data")
             @Valid @RequestBody UpdateUserRequestDTO request);
 
