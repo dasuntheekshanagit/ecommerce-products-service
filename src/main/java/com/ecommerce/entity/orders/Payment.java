@@ -1,4 +1,4 @@
-package com.ecommerce.entity.orders.entity;
+package com.ecommerce.entity.orders;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
