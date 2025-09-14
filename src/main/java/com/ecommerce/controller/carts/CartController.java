@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public interface CartController {
 
-    @GetMapping
+    @GetMapping("/{userId}")
     @Operation(summary = "Get cart", description = "Get the current user's shopping cart")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cart retrieved successfully"),
@@ -27,9 +27,19 @@ public interface CartController {
     })
     ResponseEntity<ApiResponseDTO<CartResponse>> getCart(
             @Parameter(description = "User ID", required = true)
-            @RequestHeader("X-User-Id") Long userId);
+            @PathVariable Long userId);
 
-    @PostMapping("/items")
+    @PostMapping("/{userId}")
+    @Operation(summary = "Create cart", description = "Create a cart for the user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Cart create successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data")
+    })
+    ResponseEntity<ApiResponseDTO<Void>> createCart(
+            @Parameter(description = "User ID", required = true)
+            @PathVariable Long userId);
+
+    @PostMapping("/{userId}/items")
     @Operation(summary = "Add item to cart", description = "Add a product to the user's shopping cart")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Item added to cart successfully"),
@@ -37,11 +47,11 @@ public interface CartController {
     })
     ResponseEntity<ApiResponseDTO<CartItemResponse>> addItemToCart(
             @Parameter(description = "User ID", required = true)
-            @RequestHeader("X-User-Id") Long userId,
+            @PathVariable Long userId,
             @Parameter(description = "Item to add to cart")
             @Valid @RequestBody AddCartItemRequest request);
 
-    @PatchMapping("/items/{itemId}")
+    @PatchMapping("/{userId}/items/{itemId}")
     @Operation(summary = "Update cart item", description = "Update the quantity of an item in the cart")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cart item updated successfully"),
@@ -50,13 +60,13 @@ public interface CartController {
     })
     ResponseEntity<ApiResponseDTO<CartItemResponse>> updateCartItem(
             @Parameter(description = "User ID", required = true)
-            @RequestHeader("X-User-Id") Long userId,
+            @PathVariable Long userId,
             @Parameter(description = "Cart item ID")
             @PathVariable Long itemId,
             @Parameter(description = "Updated item data")
             @Valid @RequestBody UpdateCartItemRequest request);
 
-    @DeleteMapping("/items/{itemId}")
+    @DeleteMapping("/{userId}/items/{itemId}")
     @Operation(summary = "Remove item from cart", description = "Remove a specific item from the cart")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Item removed from cart successfully"),
@@ -64,11 +74,11 @@ public interface CartController {
     })
     ResponseEntity<ApiResponseDTO<Void>> removeItemFromCart(
             @Parameter(description = "User ID", required = true)
-            @RequestHeader("X-User-Id") Long userId,
+            @PathVariable Long userId,
             @Parameter(description = "Cart item ID")
             @PathVariable Long itemId);
 
-    @DeleteMapping
+    @DeleteMapping("/{userId}")
     @Operation(summary = "Clear cart", description = "Remove all items from the user's cart")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Cart cleared successfully"),
@@ -76,5 +86,5 @@ public interface CartController {
     })
     ResponseEntity<ApiResponseDTO<Void>> clearCart(
             @Parameter(description = "User ID", required = true)
-            @RequestHeader("X-User-Id") Long userId);
+            @PathVariable Long userId);
 }

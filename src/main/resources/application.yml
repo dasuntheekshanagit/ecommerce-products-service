@@ -8,9 +8,11 @@ spring:
     name: users-service
   
   datasource:
-    url: jdbc:postgresql://localhost:5432/ecommerce_users
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:password}
+    url: jdbc:postgresql://localhost:5432/ecommerce
+    username: myuser
+    password: mypassword
+#    username: ${DB_USERNAME:postgres}
+#    password: ${DB_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
   
   jpa:
@@ -39,6 +41,9 @@ springdoc:
     title: Users Service API
     description: E-commerce Users Service
     version: 1.0.0
+  packagesToScan: com.ecommerce.controller
+  model-converters:
+    - com.ecommerce.config.ApiResponseDTOModelConverter
 
 # Logging Configuration
 logging:
@@ -57,4 +62,3 @@ management:
   endpoint:
     health:
       show-details: always
-

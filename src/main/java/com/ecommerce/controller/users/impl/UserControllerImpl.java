@@ -34,6 +34,11 @@ public class UserControllerImpl extends AbstractController implements UserContro
     }
 
     @Override
+    public ResponseEntity<ApiResponseDTO<UserResponse>> createUserProfile(Long userId, UpdateUserRequest request) {
+        return null;
+    }
+
+    @Override
     public ResponseEntity<ApiResponseDTO<UserResponse>> updateUserProfile(Long userId, UpdateUserRequest request) {
         log.info("PATCH /v1/users/{} - Updating user profile", userId);
         return ok(() -> userService.updateUser(userId, request));
@@ -47,7 +52,7 @@ public class UserControllerImpl extends AbstractController implements UserContro
     }
 
     @Override
-    public ResponseEntity<ApiResponseDTO<List<AddressResponse>>> getUserAddresses(Long userId) {
+    public ResponseEntity<ApiResponseDTO<List<AddressResponse>>> getUserAddresses(Long userId, boolean fetchAllAddress) {
         log.info("GET /v1/users/{}/addresses - Getting user addresses", userId);
         return ok(() -> userService.getUserAddresses(userId));
     }

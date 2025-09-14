@@ -31,6 +31,18 @@ public interface UserController {
             @Parameter(description = "User ID")
             @PathVariable Long userId);
 
+    @PostMapping("/{userId}")
+    @Operation(summary = "Create user profile", description = "Create a user profile")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User profile created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data")
+    })
+    ResponseEntity<ApiResponseDTO<UserResponse>> createUserProfile(
+            @Parameter(description = "User ID")
+            @PathVariable Long userId,
+            @Parameter(description = "Create user data")
+            @Valid @RequestBody UpdateUserRequest request);
+
     @PatchMapping("/{userId}")
     @Operation(summary = "Update user profile", description = "Update user profile information")
     @ApiResponses(value = {
@@ -61,8 +73,8 @@ public interface UserController {
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     ResponseEntity<ApiResponseDTO<List<AddressResponse>>> getUserAddresses(
-            @Parameter(description = "User ID")
-            @PathVariable Long userId);
+            @Parameter(description = "User ID") @PathVariable Long userId,
+            @Parameter(description = "All Address") @RequestParam(defaultValue = "true") boolean fetchAllAddress);
 
     @PostMapping("/{userId}/addresses")
     @Operation(summary = "Add address", description = "Add a new address for the user")

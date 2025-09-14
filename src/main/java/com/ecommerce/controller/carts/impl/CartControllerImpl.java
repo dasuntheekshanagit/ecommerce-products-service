@@ -26,6 +26,14 @@ public class CartControllerImpl extends AbstractController implements CartContro
         return ok(() -> cartService.getCartByUserId(userId));
     }
 
+    @Override
+    public ResponseEntity<ApiResponseDTO<Void>> createCart(Long userId) {
+
+        log.info("POST /v1/cart - userId: {}", userId);
+        // TODO:
+        return noContent(() -> cartService.clearCart(userId));
+    }
+
     public ResponseEntity<ApiResponseDTO<CartItemResponse>> addItemToCart(
             Long userId,
             AddCartItemRequest request) {
